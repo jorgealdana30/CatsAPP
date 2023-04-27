@@ -1,46 +1,19 @@
 package com.jorgealdana.catsapp
 
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.jorgealdana.catsapp.ui.theme.CatsAppTheme
+import com.jorgealdana.catsapp.databinding.ActivityMainBinding
+import com.jorgealdana.catsapp.views.viewcats.ViewCatsFragment
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
+    private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            CatsAppTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
-                }
-            }
+        setContentView(R.layout.activity_main)
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(binding.containerMain.id, ViewCatsFragment.newInstance())
+                .commitNow()
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    CatsAppTheme {
-        Greeting("Android")
     }
 }
