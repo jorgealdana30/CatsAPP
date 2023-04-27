@@ -1,4 +1,3 @@
-
 # CatApp
 
 Get all about cats with this app!
