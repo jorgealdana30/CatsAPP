@@ -1,13 +1,16 @@
 package com.jorgealdana.catsapp.views.viewcats
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.jorgealdana.catsapp.R
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.jorgealdana.catsapp.blocs.viewmodels.ViewCatsViewModel
+import com.jorgealdana.catsapp.blocs.viewmodels.adapters.CatListAdapter
+import com.jorgealdana.catsapp.databinding.FragmentViewCatsListBinding
 
 class ViewCatsFragment : Fragment() {
 
@@ -16,18 +19,32 @@ class ViewCatsFragment : Fragment() {
     }
 
     private lateinit var viewModel: ViewCatsViewModel
-
+    private lateinit var adapter: CatListAdapter
+    private var _binding: FragmentViewCatsListBinding? = null
+    private val binding get() = _binding!!
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this)[ViewCatsViewModel::class.java]
-        // TODO: Use the ViewModel
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_view_cats_list, container, false)
+        _binding = FragmentViewCatsListBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.fetchCats()
+        viewModel.cats.observe(viewLifecycleOwner) {
+            loadAdapter()
+        }
+    }
+    private fun loadAdapter() {
+        adapter = CatListAdapter(requireContext(), viewModel.cats.value!!)
+        binding.catListRV.adapter = adapter
+        binding.catListRV.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+    }
 }
