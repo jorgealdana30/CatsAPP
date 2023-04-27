@@ -20,7 +20,6 @@ class ViewCatsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this)[ViewCatsViewModel::class.java]
-        // TODO: Use the ViewModel
     }
 
     override fun onCreateView(
@@ -29,5 +28,4 @@ class ViewCatsFragment : Fragment() {
     ): View {
         return inflater.inflate(R.layout.fragment_view_cats_list, container, false)
     }
-
 }
